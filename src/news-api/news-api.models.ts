@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 import { 
     NewsApiArticle,
@@ -11,7 +11,8 @@ import {
     NewsApiTopHeadlineRequestParams
 } from 'news-api-ts';
 
-@ObjectType()
+
+@InputType()
 export class GraphQLSourceQuery implements NewsApiSourcesRequestParams {
     @Field({ nullable: true })
     category?: string;
@@ -21,7 +22,7 @@ export class GraphQLSourceQuery implements NewsApiSourcesRequestParams {
     country?: NewsApiCountries = NewsApiCountries.us;
 }
 
-@ObjectType()
+@InputType()
 export class GraphQLEverythingQuery implements NewsApiEverythingRequestParams {
     @Field({ nullable: true })
     query?: string;
@@ -47,7 +48,7 @@ export class GraphQLEverythingQuery implements NewsApiEverythingRequestParams {
     page?: number;
 }
 
-@ObjectType()
+@InputType()
 export class GraphQLTopHeadlinesQuery implements NewsApiTopHeadlineRequestParams {
     @Field({ nullable: true })
     sources?: string;
@@ -78,13 +79,16 @@ export class GraphQLSource implements NewsApiSource {
 }
 
 @ObjectType()
+export class GraphQLEverythingSource implements NewsApiArticleSource {
+    @Field()
+    id!: string;
+    @Field()
+    name!: string;
+}
+
+@ObjectType()
 export class GraphQLEverything implements NewsApiArticle {
-    @Field(type => {
-        return {
-            id: String,
-            name: String
-        }
-    })
+    @Field(type => GraphQLEverythingSource)
     source!: NewsApiArticleSource;
     @Field()
     author!: string;

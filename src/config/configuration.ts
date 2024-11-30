@@ -1,6 +1,5 @@
 export default () => ({
-    port: parseInt(process.env.PORT, 10) || 3000,
-    environment: process.env.ENVIRONMENT,
+    environment: process.env.ENVIRONMENT || 'dev',
     database: {
         mongoDbUri: process.env.MONGO_DB_URI,
         mongoDbName: process.env.MONGO_DB_NAME,
@@ -9,5 +8,5 @@ export default () => ({
         autoCreate: !!process.env.MONGO_BUFFER_COMMANDS,
         bufferCommands: !!process.env.MONGO_BUFFER_COMMANDS,
     },
-    debug: process.env.ENVIROMENT === 'development',
+    debug: process.env.ENVIRONMENT !== 'prod',
   });

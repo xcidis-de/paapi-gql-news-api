@@ -32,7 +32,7 @@ export class NewsApiRepository {
 
     async init() {
         mongoose.set({
-            debug: this.configService.get('environment') === 'development',
+            debug: this.configService.get('debug') && true,
             bufferCommands: !!this.configService.get('mongo.bufferCommands'),
             autoCreate: !!this.configService.get('mongo.autoCreate'),
         })

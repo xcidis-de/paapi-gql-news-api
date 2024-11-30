@@ -9,13 +9,13 @@ export class NewsApiEverythingResolver {
       private newsApiService: NewsApiService,
     ) {}
 
-    @Query(() => GraphQLEverythingQuery, { name: 'newsApiEverything' })
-    async newsApiEverythingQuery(@Body('query') query: GraphQLEverythingQuery) {
+    @Query(() => GraphQLEverything, { name: 'newsApiEverything' })
+    async newsApiEverythingQuery(@Body('params') query: GraphQLEverythingQuery) {
       return this.newsApiService.getEverything(query)
     }
 
-    @Query(() => GraphQLTopHeadlinesQuery, { name: 'newsApiTopHeadlines' })
-    async newsApiTopHeadlinesQuery(@Body('query') query: GraphQLTopHeadlinesQuery) {
+    @Query(() => GraphQLEverything, { name: 'newsApiTopHeadlines' })
+    async newsApiTopHeadlinesQuery(@Body('params') query: GraphQLTopHeadlinesQuery) {
         return this.newsApiService.getTopHeadlines(query)
     }
 }
@@ -27,8 +27,8 @@ export class NewsApiSourceResolver {
       private newsApiService: NewsApiService,
     ) {}
 
-    @Query(() => GraphQLSourceQuery, { name: 'newsApiSources' })
-    async newsApiSourcesQuery(@Body('query') query: GraphQLEverythingQuery) {
+    @Query(() => GraphQLSource, { name: 'newsApiSources' })
+    async newsApiSourcesQuery(@Body('params') query: GraphQLSourceQuery) {
       return this.newsApiService.getSources(query)
     }
 }

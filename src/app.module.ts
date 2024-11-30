@@ -9,7 +9,8 @@ import configuration from './config/configuration';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [configuration]
+      load: [configuration],
+      envFilePath: ['.env', '.env.local']
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

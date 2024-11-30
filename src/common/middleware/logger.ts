@@ -6,8 +6,9 @@ export class LoggerMiddleware extends ConsoleLogger implements NestMiddleware {
   private enabled: boolean;
   constructor(private configService: ConfigService) {
     super();
-    this.enabled = configService.get('environment') === 'development';
+    this.enabled = this.configService.get('environment') === 'dev';
   }
+  
   use(req: any, res: any, next: (error?: Error | any) => void) {
     if (!this.enabled) {
       console.log(req.body);
