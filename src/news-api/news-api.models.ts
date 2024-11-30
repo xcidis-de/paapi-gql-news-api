@@ -66,42 +66,42 @@ export class GraphQLTopHeadlinesQuery implements NewsApiTopHeadlineRequestParams
 
 @ObjectType()
 export class GraphQLSource implements NewsApiSource {
-    @Field()
+    @Field({ nullable: false })
     id!: string;
-    @Field()
+    @Field({ nullable: false })
     name!: string;
-    @Field()
+    @Field({ nullable: false })
     description!: string;
-    @Field()
+    @Field({ nullable: false })
     url!: string;
-    @Field()
+    @Field({ nullable: false })
     category!: string;
 }
 
 @ObjectType()
 export class GraphQLEverythingSource implements NewsApiArticleSource {
-    @Field()
+    @Field({ nullable: false })
     id!: string;
-    @Field()
+    @Field({ nullable: false })
     name!: string;
 }
 
 @ObjectType()
 export class GraphQLEverything implements NewsApiArticle {
-    @Field(type => GraphQLEverythingSource)
+    @Field(() => GraphQLEverythingSource, { nullable: false })
     source!: NewsApiArticleSource;
-    @Field()
+    @Field({ nullable: false })
     author!: string;
-    @Field()
+    @Field({ nullable: false })
     title!: string;
-    @Field()
+    @Field({ nullable: false })
     description!: string;
-    @Field()
+    @Field({ nullable: true })
     url?: string;
-    @Field()
+    @Field({ nullable: true })
     urlToImage?: string;
-    @Field()
+    @Field({ nullable: false })
     publishedAt!: string;
-    @Field()
+    @Field({ nullable: false })
     content!: string;
 }
