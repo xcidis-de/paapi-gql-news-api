@@ -19,7 +19,7 @@ class GraphQLPageInfo {
     @Field({ nullable: false })
     pageSize!: number;
     @Field({ nullable: false })
-    pageNumber!: number;
+    page!: number;
 }
 
 @InputType()
@@ -53,9 +53,9 @@ export class GraphQLEverythingQuery implements NewsApiEverythingRequestParams {
     @Field({ nullable: true })
     sortBy?: NewsApiSortBy;
     @Field({ nullable: true })
-    pageSize?: number;
+    pageSize!: number;
     @Field({ nullable: true })
-    page?: number;
+    page!: number;
 }
 
 @InputType()
@@ -69,9 +69,9 @@ export class GraphQLTopHeadlinesQuery implements NewsApiTopHeadlineRequestParams
     @Field({ nullable: true })
     country?: NewsApiCountries = NewsApiCountries.us;
     @Field({ nullable: true })
-    pageSize?: number;
+    pageSize!: number;
     @Field({ nullable: true })
-    page?: number;
+    page!: number;
 }
 
 @ObjectType()
@@ -90,30 +90,30 @@ class GraphQLSource implements NewsApiSource {
 
 @ObjectType()
 class GraphQLEverythingSource implements NewsApiArticleSource {
-    @Field({ nullable: false })
-    id!: string;
-    @Field({ nullable: false })
-    name!: string;
+    @Field({ nullable: true })
+    id?: string;
+    @Field({ nullable: true })
+    name?: string;
 }
 
 @ObjectType()
 class GraphQLEverything implements NewsApiArticle {
     @Field(() => GraphQLEverythingSource, { nullable: false })
     source!: NewsApiArticleSource;
-    @Field({ nullable: false })
-    author!: string;
+    @Field({ nullable: true })
+    author?: string;
     @Field({ nullable: false })
     title!: string;
-    @Field({ nullable: false })
-    description!: string;
+    @Field({ nullable: true })
+    description?: string;
     @Field({ nullable: true })
     url?: string;
     @Field({ nullable: true })
     urlToImage?: string;
     @Field({ nullable: false })
     publishedAt!: string;
-    @Field({ nullable: false })
-    content!: string;
+    @Field({ nullable: true })
+    content?: string;
 }
 
 @ObjectType()
@@ -121,7 +121,7 @@ export class GraphQLTopHeadlinesResponse {
     @Field(() => [GraphQLEverything], { nullable: false })
     articles!: NewsApiArticle[];
     @Field(() => GraphQLPageInfo, { nullable: false })
-    page!: GraphQLPageInfo;
+    pagination!: GraphQLPageInfo;
     @Field({ nullable: false })
     totalResults!: number;
 }
@@ -139,7 +139,7 @@ export class GraphQLEverythingResponse {
     @Field(() => [GraphQLEverything], { nullable: false })
     articles!: NewsApiArticle[];
     @Field(() => GraphQLPageInfo, { nullable: false })
-    page!: GraphQLPageInfo;
+    pagination!: GraphQLPageInfo;
     @Field({ nullable: false })
     totalResults!: number;
 }

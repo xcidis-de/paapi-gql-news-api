@@ -8,27 +8,31 @@ export class NewsApiService {
         private newsApiLib: NewsApiLibService
     ) {}
 
-    async getTopHeadlines(filter: NewsApiTopHeadlineRequestParams): Promise<GraphQLTopHeadlinesResponse> {
+    async getTopHeadlines(
+        filter: NewsApiTopHeadlineRequestParams
+    ): Promise<GraphQLTopHeadlinesResponse> {
         const response: NewsApiQueryResponse = await this.newsApiLib.getTopHeadlines(filter);
 
         return {
             articles: response.articles,
-            page: {
+            pagination: {
                 pageSize: response.articles.length,
-                pageNumber: filter.page
+                page: filter.page ? filter.page : 1
             },
             totalResults: response.totalResults,
         }
     }
 
-    async getEverything(filter: NewsApiEverythingRequestParams): Promise<GraphQLEverythingResponse> {
+    async getEverything(
+        filter: NewsApiEverythingRequestParams
+    ): Promise<GraphQLEverythingResponse> {
         const response: NewsApiQueryResponse = await this.newsApiLib.getEverything(filter);
-        
+
         return {
             articles: response.articles,
-            page: {
+            pagination: {
                 pageSize: response.articles.length,
-                pageNumber: filter.page
+                page: filter.page
             },
             totalResults: response.totalResults,
         }
