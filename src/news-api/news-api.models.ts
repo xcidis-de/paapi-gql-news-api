@@ -3,21 +3,31 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { 
     NewsApiArticle,
     NewsApiArticleSource,
+    NewsApiCategories,
     NewsApiCountries,
     NewsApiEverythingRequestParams,
+    NewsApiLanguages,
     NewsApiSearchIn, 
+    NewsApiSortBy, 
     NewsApiSource,
     NewsApiSourcesRequestParams, 
     NewsApiTopHeadlineRequestParams
 } from 'news-api-ts';
 
+@ObjectType()
+class GraphQLPageInfo {
+    @Field({ nullable: false })
+    pageSize!: number;
+    @Field({ nullable: false })
+    pageNumber!: number;
+}
 
 @InputType()
 export class GraphQLSourceQuery implements NewsApiSourcesRequestParams {
     @Field({ nullable: true })
-    category?: string;
+    category?: NewsApiCategories;
     @Field({ nullable: true })
-    language?: string;
+    language?: NewsApiLanguages = NewsApiLanguages.en;
     @Field({ nullable: true })
     country?: NewsApiCountries = NewsApiCountries.us;
 }
@@ -39,9 +49,9 @@ export class GraphQLEverythingQuery implements NewsApiEverythingRequestParams {
     @Field({ nullable: true })
     to?: Date;
     @Field({ nullable: true })
-    language?: string;
+    language?: NewsApiLanguages = NewsApiLanguages.en;
     @Field({ nullable: true })
-    sortBy?: string;
+    sortBy?: NewsApiSortBy;
     @Field({ nullable: true })
     pageSize?: number;
     @Field({ nullable: true })
@@ -53,9 +63,9 @@ export class GraphQLTopHeadlinesQuery implements NewsApiTopHeadlineRequestParams
     @Field({ nullable: true })
     sources?: string;
     @Field({ nullable: true })
-    q?: string;
+    query?: string;
     @Field({ nullable: true })
-    category?: string;
+    category?: NewsApiCategories = NewsApiCategories.general;
     @Field({ nullable: true })
     country?: NewsApiCountries = NewsApiCountries.us;
     @Field({ nullable: true })
@@ -65,7 +75,7 @@ export class GraphQLTopHeadlinesQuery implements NewsApiTopHeadlineRequestParams
 }
 
 @ObjectType()
-export class GraphQLSource implements NewsApiSource {
+class GraphQLSource implements NewsApiSource {
     @Field({ nullable: false })
     id!: string;
     @Field({ nullable: false })
@@ -79,7 +89,7 @@ export class GraphQLSource implements NewsApiSource {
 }
 
 @ObjectType()
-export class GraphQLEverythingSource implements NewsApiArticleSource {
+class GraphQLEverythingSource implements NewsApiArticleSource {
     @Field({ nullable: false })
     id!: string;
     @Field({ nullable: false })
@@ -87,7 +97,7 @@ export class GraphQLEverythingSource implements NewsApiArticleSource {
 }
 
 @ObjectType()
-export class GraphQLEverything implements NewsApiArticle {
+class GraphQLEverything implements NewsApiArticle {
     @Field(() => GraphQLEverythingSource, { nullable: false })
     source!: NewsApiArticleSource;
     @Field({ nullable: false })
@@ -104,4 +114,32 @@ export class GraphQLEverything implements NewsApiArticle {
     publishedAt!: string;
     @Field({ nullable: false })
     content!: string;
+}
+
+@ObjectType()
+export class GraphQLTopHeadlinesResponse {
+    @Field(() => [GraphQLEverything], { nullable: false })
+    articles!: NewsApiArticle[];
+    @Field(() => GraphQLPageInfo, { nullable: false })
+    page!: GraphQLPageInfo;
+    @Field({ nullable: false })
+    totalResults!: number;
+}
+
+@ObjectType()
+export class GraphQLSourcesResponse {
+    @Field(() => [GraphQLSource], { nullable: false })
+    sources!: NewsApiSource[];
+    @Field({ nullable: false })
+    totalResults!: number;
+}
+
+@ObjectType()
+export class GraphQLEverythingResponse {
+    @Field(() => [GraphQLEverything], { nullable: false })
+    articles!: NewsApiArticle[];
+    @Field(() => GraphQLPageInfo, { nullable: false })
+    page!: GraphQLPageInfo;
+    @Field({ nullable: false })
+    totalResults!: number;
 }

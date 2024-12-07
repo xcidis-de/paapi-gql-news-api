@@ -1,25 +1,25 @@
 
 import { Module } from '@nestjs/common';
-import { NewsApiEverythingResolver, NewsApiSourceResolver } from './news-api.resolver';
-import { NewsApiService, NewsApiServiceModule } from 'news-api-ts';
+import { NewsApiResolver } from './news-api.resolver';
+import { NewsApiLibService, NewsApiLibServiceModule } from 'news-api-ts';
 import { NewsApiRepository } from './news-api.repository';
 import { ConfigService } from '@nestjs/config';
+import { NewsApiService } from './news-api.service';
 
 
 @Module({
   imports: [
-    NewsApiServiceModule
+    NewsApiLibServiceModule,
   ],
   providers: [
-    NewsApiEverythingResolver, 
-    NewsApiSourceResolver, 
-    NewsApiService, 
+    NewsApiResolver, 
+    NewsApiService,
+    NewsApiLibService,
     NewsApiRepository, 
     ConfigService
   ],
   exports: [
-    NewsApiEverythingResolver,
-    NewsApiSourceResolver
+    NewsApiResolver,
   ],
 })
 export class NewsApiModule {}

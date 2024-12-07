@@ -1,34 +1,25 @@
-import { Resolver, Query } from '@nestjs/graphql';
-import { NewsApiService } from 'news-api-ts';
-import { GraphQLEverything, GraphQLEverythingQuery, GraphQLSource, GraphQLSourceQuery, GraphQLTopHeadlinesQuery } from './news-api.models';
-import { Body } from '@nestjs/common';
+import { Resolver, Query, Args } from '@nestjs/graphql';
+import { GraphQLEverythingQuery, GraphQLEverythingResponse, GraphQLSourceQuery, GraphQLSourcesResponse, GraphQLTopHeadlinesQuery, GraphQLTopHeadlinesResponse } from './news-api.models';
+import { NewsApiService } from './news-api.service';
 
-@Resolver(() => GraphQLEverything)
-export class NewsApiEverythingResolver {
+@Resolver()
+export class NewsApiResolver {
     constructor(
       private newsApiService: NewsApiService,
     ) {}
 
-    @Query(() => GraphQLEverything, { name: 'newsApiEverything' })
-    async newsApiEverythingQuery(@Body('params') query: GraphQLEverythingQuery) {
-      return this.newsApiService.getEverything(query)
+    @Query(() => GraphQLEverythingResponse, { name: 'newsApiEverything' })
+    async newsApiEverythingQuery(@Args('filter') filter: GraphQLEverythingQuery) {
+      return this.newsApiService.getEverything(filter)
     }
 
-    @Query(() => GraphQLEverything, { name: 'newsApiTopHeadlines' })
-    async newsApiTopHeadlinesQuery(@Body('params') query: GraphQLTopHeadlinesQuery) {
-        return this.newsApiService.getTopHeadlines(query)
+    @Query(() => GraphQLSourcesResponse, { name: 'newsApiSources'})
+    async newsApiSourcesQuery(@Args('filter', { nullable: true }) filter?: GraphQLSourceQuery) {
+      return this.newsApiService.getSources(filter)
     }
-}
 
-@Resolver(() => GraphQLSource)
-export class NewsApiSourceResolver {
-    
-    constructor(
-      private newsApiService: NewsApiService,
-    ) {}
-
-    @Query(() => GraphQLSource, { name: 'newsApiSources' })
-    async newsApiSourcesQuery(@Body('params') query: GraphQLSourceQuery) {
-      return this.newsApiService.getSources(query)
+    @Query(() => GraphQLTopHeadlinesResponse, { name: 'newsApiTopHeadlines' })
+    async newsApiTopHeadlinesQuery(@Args('filter') filter: GraphQLTopHeadlinesQuery) {
+        return this.newsApiService.getTopHeadlines(filter)
     }
 }
