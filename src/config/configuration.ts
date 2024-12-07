@@ -1,12 +1,15 @@
 export default () => ({
     environment: process.env.ENVIRONMENT || 'dev',
-    database: {
-        mongoDbUri: process.env.MONGO_DB_URI,
-        mongoDbName: process.env.MONGO_DB_NAME,
-        mongoDbUser: process.env.MONGO_DB_USER,
-        mongoDbPass: process.env.MONGO_DB_PASS,
+    mongo: {
+        host: process.env.MONGO_DB_URI,
+        db: process.env.MONGO_DB_NAME,
+        user: process.env.MONGO_DB_USER,
+        pass: process.env.MONGO_DB_PASS,
         autoCreate: !!process.env.MONGO_BUFFER_COMMANDS,
         bufferCommands: !!process.env.MONGO_BUFFER_COMMANDS,
+    },
+    newsApi: {
+        apiKey: process.env.NEWS_API_TOKEN,
     },
     debug: process.env.ENVIRONMENT !== 'prod',
   });
