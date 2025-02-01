@@ -91,9 +91,9 @@ class GraphQLSource implements NewsApiSource {
 @ObjectType()
 class GraphQLEverythingSource implements NewsApiArticleSource {
     @Field({ nullable: true })
-    id?: string;
+    id: string;
     @Field({ nullable: true })
-    name?: string;
+    name: string;
 }
 
 @ObjectType()
