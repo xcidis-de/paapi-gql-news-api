@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { getModelForClass, prop } from '@typegoose/typegoose';
+import { getModelForClass, prop, ReturnModelType } from '@typegoose/typegoose';
 import { NewsApiArticle, NewsApiQueryResponse, NewsApiSource, NewsApiSourcesResponse } from 'news-api-ts';
-import mongoose from "mongoose";
+import mongoConnect from '../common/database';
 
 class NewsApiHistory implements NewsApiQueryResponse {
     @prop()
@@ -24,34 +24,22 @@ class NewsApiSourceHistory implements NewsApiSourcesResponse {
 export class NewsApiRepository {
     constructor(
         private configService: ConfigService,
-    ) {
-        // mongoose.set({
-        //     debug: this.configService.get('debug') && true,
-        //     bufferCommands: !!this.configService.get('mongo.bufferCommands'),
-        //     autoCreate: !!this.configService.get('mongo.autoCreate'),
-        // })
-        // const host = this.configService.get('mongo.host');
-        // const dbName = this.configService.get('mongo.dbName');
-        // const pass = this.configService.get('mongo.pass');
-        // const user = this.configService.get('mongo.user');
-        // const uri = `mongodb://${user}:${pass}@${host}/${dbName}`;
-        // this.conn = mongoose.createConnection(uri);
-        // this.conn.on('connected', () => {
-        //     console.log('Connected to MongoDB');
-        // });
-    }
+    ) {}
     
-    private NewsApiHistoryModel = getModelForClass(NewsApiHistory);
-    private NewsApiSourceHistoryModel = getModelForClass(NewsApiSourceHistory);
-    private conn: mongoose.Connection;
 
-    async saveTopHeadlines(topHeadlines: NewsApiQueryResponse) {
-        const history = new this.NewsApiHistoryModel(topHeadlines);
-        await history.save();
+    async saveHeadlines(topHeadlines: NewsApiQueryResponse) {
+        const conn = await mongoConnect(this.configService);
+        console.log(conn.db);
+            // .then((conn) => {
+            //     conn.collection(NewsApiHistory.name);
+            //     getModelForClass(NewsApiHistory).create(topHeadlines);
+            //     conn.close()
+            // })
+            // .catch(err => console.error(err))
     }
 
     async saveSources(sources: NewsApiSourcesResponse) {
-        const history = new this.NewsApiSourceHistoryModel(sources);
-        await history.save();
+        const model = getModelForClass(NewsApiSourceHistory)
+        await model.create(sources);
     }
 }
